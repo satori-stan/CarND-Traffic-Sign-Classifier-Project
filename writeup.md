@@ -1,4 +1,4 @@
-#**Traffic Sign Recognition** 
+# **Traffic Sign Recognition** 
 
 **Build a Traffic Sign Recognition Project**
 
@@ -34,18 +34,18 @@ The goals / steps of this project are the following:
 [image19]: ./static/Convolution3.png "Activations of the third convolution layer"
 
 ## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
+### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
 
 ---
-###Writeup / README
+### Writeup / README
 
-####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
+#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
 You're reading it! and here is a link to my [project code](https://github.com/satori-stan/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
-###Data Set Summary & Exploration
+### Data Set Summary & Exploration
 
-####1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
+#### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
 I used the numpy library to calculate summary statistics of the traffic
 signs data set. Basically take advantage of the "shape" property of a numpy array:
@@ -56,7 +56,7 @@ signs data set. Basically take advantage of the "shape" property of a numpy arra
 * The shape of a traffic sign image is 32x32
 * The number of unique classes/labels in the data set is 43
 
-####2. Include an exploratory visualization of the dataset.
+#### 2. Include an exploratory visualization of the dataset.
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how the examples per class in the training dataset, where it is clear that the distribution of examples is not even.
 
@@ -66,9 +66,9 @@ Here is a random example from the data that we will be following through the cal
 
 ![Right of way at intersection German Traffic Sign][image2]
 
-###Design and Test a Model Architecture
+### Design and Test a Model Architecture
 
-####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
+#### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
 As a first step, I decided to augment the dataset. As can be seen by the exploratory visualization (histogram), some classes are severely underrepresented (~180-240) while others have a significant number of examples (~1800-2010). Reading up on possible augmentation techniques I found shearing, rotation, translation, color modifications and occlusion to be commonplace.
 
@@ -108,7 +108,7 @@ Here is an example of a traffic sign image after preprocessing.
 
 As a last step, I normalized the image data because optimization algorithms tend to do best with normalized data since all values are within a small range.
 
-####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
+#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
 My final model consisted of the following layers:
 
@@ -144,7 +144,7 @@ Finally, the Softmax layer transforms the probabilities to the predicted class.
 
 As a sidenote, the placeholder initialization was changed from the Truncated Normal used in the LeNet-Lab to the Xavier/2 recommended by the C231n Stanford lectures. Curiously, the training loss plateaued sometimes before decreasing again and the validation accuracy decreased before it increased, but for this particular model, proved a good fit.
 
-####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
 To train the model, I used an Adam Optimizer (same as in the LeNet-Lab, but in all the literature, it proved to be the best algorithm). The learning rate came down to 1e-5. A higher learning rate apparently failed to converge since the loss didn't present a steady decline. I did play around with decaying learning rates, but dropped them when they didn't seem to provide much benefit. Although it very well might have been because I wasn't using it properly.
 
@@ -158,7 +158,7 @@ Running the model for a long time was a big problem because the Jupyter session 
 
 After some more reading I found out that it is possible to instruct TensorFlow to store checkpoints after so many hours of runtime or for specific epochs of the training process. It is also possible to record summaries to display in TensorBoard for the same graphs that I was plotting in Jupyter. Definitely will use those in future projects.
 
-####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
 * training set accuracy of 85.2%
@@ -176,9 +176,9 @@ Finally, the dropout rate was set to 50% during training as recommended by the p
 
 There are a couple of things that I would change for a work project. Given a dedicated computer, I would allow the training to run for full days or weeks. With that timeframe in mind, I definitely would make the network larger. I would also first train the network on the provided training set without dropout or augmented examples before adding them, which I think would mean that all improvement after the initial training would be towards better generalization of the model.
 
-###Test a Model on New Images
+### Test a Model on New Images
 
-####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
+#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
 Here are five German traffic signs that I found on the web:
 
@@ -193,7 +193,7 @@ The second, third and fifth images add difficulty because they are not properly 
 In general, the images that I found online were not of the traffic sign alone so I had to trim them. After trimming, some of them were still of a different size that the necessary 32x32 so I had to resize them. After the two operations, the aspect ratio of the images to the canvas size still didn't match the original set, which made it difficult for the network. Some of the images had to be stretched to fill the 28x28 space of the original images before they were correctly classified.
 
 
-####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
 Here are the results of the prediction:
 
@@ -213,7 +213,7 @@ The model was able to correctly guess 6 of the 9 traffic signs, which gives an a
 
 Some of the incorrectly classified signs in the submitted notebook were correctly classified in previous attempts, for example traffic sign 5 which is pretty recognizable for humans regardless of the translation present in the image.
 
-####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
+#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
 The code for making predictions on my final model is located in the 26th cell of the Ipython notebook.
 
@@ -314,7 +314,7 @@ I think that more detailed features inside the signs present problems while the 
 It should be possible to infer that if the top N predictions don't present a sufficiently large difference, that the model is unsure and a human should assist the decision.
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
-####1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+#### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
 
 I plotted the first three convolution featuremaps and what I can see is the first layer being activated by upwards slanting lines, and some of the content of the sign and downward lines to lesser degree.
 
