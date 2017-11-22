@@ -13,22 +13,25 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./static/visualization.png "Visualization"
+[image1]: ./static/Visualization.png "Visualization"
 [image2]: ./static/example.png "Random Example: Right of way at the next intersection (class 11)"
 [image3]: ./static/example_augmented1.png "Random Example after augmentation"
 [image4]: ./static/example_augmented2.png "Random Example after augmentation bis"
 [image5]: ./static/visualization2.png "Train data histogram after augmentation"
 [image6]: ./static/example_preprocessed.png "Random example after preprocessing"
 [image7]: ./static/training_loss.png "Training loss evolution"
-[image8]: ./images/1.png "Traffic Sign 1"
-[image9]: ./images/13.png "Traffic Sign 2"
-[image10]: ./images/17.png "Traffic Sign 3"
+[image8]: ./images/1.png "Traffic Sign 6"
+[image9]: ./images/13.png "Traffic Sign 7"
+[image10]: ./images/17.png "Traffic Sign 5"
 [image11]: ./images/21.png "Traffic Sign 4"
-[image12]: ./images/23.png "Traffic Sign 5"
-[image13]: ./images/25.png "Traffic Sign 6"
-[image14]: ./images/28.png "Traffic Sign 7"
-[image15]: ./images/30.png "Traffic Sign 8"
-[image16]: ./images/40.png "Traffic Sign 9"
+[image12]: ./images/23.png "Traffic Sign 3"
+[image13]: ./images/25.png "Traffic Sign 9"
+[image14]: ./images/28.png "Traffic Sign 8"
+[image15]: ./images/30.png "Traffic Sign 1"
+[image16]: ./images/40.png "Traffic Sign 2"
+[image17]: ./static/Convolution1.png "Activations of the first convolution layer"
+[image18]: ./static/Convolution3.png "Activations of the second convolution layer"
+[image19]: ./static/Convolution3.png "Activations of the third convolution layer"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -55,13 +58,13 @@ signs data set. Basically take advantage of the "shape" property of a numpy arra
 
 ####2. Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set. It is a bar chart showing how the examples per class in the training dataset, where it is clear that the distribution of examples is not even.
 
-![alt text][image1]
+![Histogram of examples of class in the training set][image1]
 
-Here is a random example from the data that we will be following through the calculations ...
+Here is a random example from the data that we will be following through the calculations.
 
-![alt text][image2]
+![Right of way at intersection German Traffic Sign][image2]
 
 ###Design and Test a Model Architecture
 
@@ -75,17 +78,17 @@ Color modification will help with identifying the traffic sign in different time
 
 Occlusion will account for other objects hiding part of the traffic sign. These objects may be other signs, pedestrians, trees, stickers, graffiti, etc.
 
-For my submission I decided to use all except occlusion to simplify the solution, although color modification was part of the preprocessing step and not the data augmentation. After several searches on how to augment a dataset, I found [code](https://medium.com/@vivek.yadav/improved-performance-of-deep-learning-neural-network-models-on-traffic-sign-classification-using-6355346da2dc) that applies these transformations using the OpenCV library and integrated it to my project. The functions in question apply random transformations to an image within the provided limits. I set the limits at +/- 45° of rotation, 5 pixels of shear and 10 pixels of translation.
+For my submission I decided to use all except occlusion to simplify the solution, although color modification was part of the preprocessing step and not the data augmentation. After several searches on how to augment a dataset, I found [code](https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_geometric_transformations/py_geometric_transformations.html) that applies these transformations using the OpenCV library and integrated it to my project. The functions in question apply random transformations to an image within the provided limits. I set the limits at +/- 45° of rotation, 5 pixels of shear and 10 pixels of translation.
 
 Here are two different transformations of the random example image:
-![alt text][image3]
-![alt text][image4]
+
+![Example image with rotation, zooming and translation][image3] ![Example image with translation, shearing and zooming][image4]
 
 The augmentation was only applied to the Train data set since the Validation and Test sets are meant only to test the robustness of the network that should already take into account all the differences in the image.
 
 Here is the example count per class after augmentation:
 
-![alt text][image5]
+![Histogram of examples per class after augmentation shows a more even distribution][image5]
 
 After augmentation, the least amount of examples for a class is now 1170.
 
@@ -101,7 +104,7 @@ I convert the images to grayscale because having less channels requires less par
 
 Here is an example of a traffic sign image after preprocessing.
 
-![alt text][image6]
+![Grayscale, intensity rescaled right of way at intersection image][image6]
 
 As a last step, I normalized the image data because optimization algorithms tend to do best with normalized data since all values are within a small range.
 
@@ -149,7 +152,7 @@ My model was trained for 1400 epochs with batch size of 256 examples, which took
 
 Here is the evolution of the training loss and validation accuracy:
 
-![alt text][image7]
+![Training loss evolution and validation accuracy plots show the expected curves][image7]
 
 Running the model for a long time was a big problem because the Jupyter session kept being automatically closed after some time of inactivity. Because of this, my training code will first loads weights from previous sessions if found. In the end this feature was not very useful because while it helped with seeing results of more epochs, I data for the loss and accuracy graphs.
 
@@ -179,9 +182,9 @@ There are a couple of things that I would change for a work project. Given a ded
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image15] ![alt text][image16] ![alt text][image12] 
-![alt text][image11] ![alt text][image10] ![alt text][image8]
-![alt text][image9] ![alt text][image14] ![alt text][image13]
+![Beware of snow/ice traffic sign][image15] ![Roundabout mandatory traffic sign][image16] ![Slippery road traffic sign][image12] 
+![Double curve traffic sign][image11] ![No entry traffic sign][image10] ![Speed limit 30km/h traffic sign][image8]
+![Yield traffic sign][image9] ![Children crossing traffic sign][image14] ![Road works traffic sign][image13]
 
 The first image might be difficult to classify because in general, the network has difficulty with the internal features of the signs. This issue is most clear with the third and ninth images.
 
@@ -318,3 +321,7 @@ I plotted the first three convolution featuremaps and what I can see is the firs
 The second layer was more interested in the information in and around the sign, but showed less intensity in the activations although more activity overall.
 
 The third layer, which already presents some data compression shows disjointed activations although there are some indications of the sign borders, especially on the upwards slanting line of the sign's border which happens to be the side catching the light and thus more easily differentiable than the other side. Little to no activation is displayed matching the shape in the center of the sign. Since the example is similar to the sign that was misclassified most, it is telling that there are no such activations.
+
+![Convolution 1 activations for the Right of way at intersection traffic sign][image17]
+![Convolution 2 activations for the Right of way at intersection traffic sign][image18]
+![Convolution 3 activations for the Right of way at intersection traffic sign][image19]
